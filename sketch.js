@@ -5,24 +5,19 @@ const SCREEN_WIDTH = 1000;
 const SCREEN_HEIGHT = 600;
 const STARTING_BALL_SPEED = 4;
 
-class Brick {
-  x = 0;
-  y = 0;
-  width = 40;
-  height = 20;
-  isBroken = false;
-
-  constructor() {
-    this.isBroken = false;
-  }
-
-  draw() {
+function Brick() {
+  this.x = 0;
+  this.y = 0;
+  this.width = 40;
+  this.height = 20;
+  this.isBroken = false;
+  this.draw = function() {
     if (!this.isBroken) {
       rect(this.x, this.y, this.width, this.height);
     }
   }
 
-  ballHitsMe(ball) {
+  this.ballHitsMe = function(ball) {
     if (ball.x < this.x) return false;
 
     if (ball.x > this.x + this.width) return false;
