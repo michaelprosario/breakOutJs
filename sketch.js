@@ -1,0 +1,173 @@
+const PADDLE_MOVE_STOP = 0;
+const PADDLE_MOVE_LEFT = 1;
+const PADDLE_MOVE_RIGHT = 2;
+const SCREEN_WIDTH = 1000;
+const SCREEN_HEIGHT = 600;
+const STARTING_BALL_SPEED = 4;
+
+class Brick {
+  x = 0;
+  y = 0;
+  width = 40;
+  height = 20;
+  isBroken = false;
+
+  constructor() {
+    this.isBroken = false;
+  }
+
+  draw() {
+    if (!this.isBroken) {
+      rect(this.x, this.y, this.width, this.height);
+    }
+  }
+
+  ballHitsMe(ball) {
+    if (ball.x < this.x) return false;
+
+    if (ball.x > this.x + this.width) return false;
+
+    if (ball.y < this.y) return false;
+
+    if (ball.y > this.y + this.height) return false;
+
+    return true;
+  }
+}
+
+class Ball {
+  x = 0;
+  y = 0;
+  radius = 20;
+  ballSpeed = STARTING_BALL_SPEED;
+  deltaX = STARTING_BALL_SPEED;
+  deltaY = STARTING_BALL_SPEED;
+
+  constructor() {}
+
+  update() {
+    this.x += this.deltaX;
+    this.y += this.deltaY;
+
+    if (this.y > SCREEN_HEIGHT) {
+      this.deltaY = -1 * this.ballSpeed;
+      alert("game over");
+      gameOver = true;
+    }
+
+    if (this.x > SCREEN_WIDTH) {
+      this.deltaX = -1 * this.ballSpeed;
+    }
+
+    if (this.x < 0) {
+      this.deltaX = this.ballSpeed;
+    }
+
+    if (this.y < 0) {
+      this.deltaY = this.ballSpeed;
+    }
+  }
+
+  draw() {
+    ellipse(this.x, this.y, this.radius, this.radius);
+  }
+
+  bounceUp() {
+    this.deltaY = this.ballSpeed * -1;
+  }
+
+  toggleUpDown() {
+    this.deltaY = this.deltaY * -1;
+  }
+}
+
+class Paddle {
+  x = mouseX;
+  y = 0;
+  width = 100;
+  height = 20;
+  deltaX = 10;
+  currentDirection = PADDLE_MOVE_STOP;
+
+  constructor() {
+    this.y = SCREEN_HEIGHT - 20;
+  }
+  
+  moveLeft() {
+    this.currentDirection = PADDLE_MOVE_LEFT;
+  }
+
+  moveRight() {
+    this.currentDirection = PADDLE_MOVE_RIGHT;
+  }
+
+  stopMoving() {
+    this.currentDirection = PADDLE_MOVE_STOP;
+  }  
+
+  ballHitsMe(ball) {
+    if (ball.x < this.x) return false;
+
+    if (ball.x > this.x + this.width) return false;
+
+    if (ball.y < this.y) return false;
+
+    if (ball.y > this.y + this.height) return false;
+
+    return true;
+  }
+
+  update() {
+    this.x = mouseX;
+  }
+
+  draw() {
+    rect(this.x, this.y, this.width, this.height);
+  }
+}
+
+let paddle;
+let ball;
+let gameOver = false;
+let bricks = [];
+function setup() {
+  createCanvas(SCREEN_WIDTH, SCREEN_HEIGHT);
+  paddle = new Paddle();
+  ball = new Ball();
+
+  for (let i = 0; i < 30; i++) {
+    var brick = new Brick();
+    brick.x = Math.random() * SCREEN_WIDTH;
+    brick.y = Math.random() * SCREEN_HEIGHT * 0.5;
+    bricks.push(brick);
+  }
+}
+
+function draw() {
+  if (gameOver) {
+    return;
+  }
+  background(200);
+  fill(204, 101, 192, 127);
+  stroke(127, 63, 120);
+
+  paddle.update();
+  paddle.draw();
+
+  ball.update();
+  ball.draw();
+
+  if (paddle.ballHitsMe(ball)) {
+    ball.bounceUp();
+  }
+
+  for (let brick of bricks) {
+    brick.draw();
+
+    if (!brick.isBroken && brick.ballHitsMe(ball)) {
+      brick.isBroken = true;
+      ball.toggleUpDown();
+    }
+  }
+}
+
