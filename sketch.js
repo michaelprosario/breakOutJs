@@ -156,7 +156,8 @@ function draw() {
     ball.bounceUp();
   }
 
-  for (let brick of bricks) {
+  for (let k= 0; k < bricks.length; k++) {
+    let brick = bricks[k];
     brick.draw();
 
     if (!brick.isBroken && brick.ballHitsMe(ball)) {
