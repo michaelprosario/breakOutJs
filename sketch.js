@@ -11,13 +11,13 @@ function Brick() {
   this.width = 40;
   this.height = 20;
   this.isBroken = false;
-  this.draw = function() {
+  this.draw = function () {
     if (!this.isBroken) {
       rect(this.x, this.y, this.width, this.height);
     }
   }
 
-  this.ballHitsMe = function(ball) {
+  this.ballHitsMe = function (ball) {
     if (ball.x < this.x) return false;
 
     if (ball.x > this.x + this.width) return false;
@@ -87,7 +87,7 @@ class Paddle {
   constructor() {
     this.y = SCREEN_HEIGHT - 20;
   }
-  
+
   moveLeft() {
     this.currentDirection = PADDLE_MOVE_LEFT;
   }
@@ -98,7 +98,7 @@ class Paddle {
 
   stopMoving() {
     this.currentDirection = PADDLE_MOVE_STOP;
-  }  
+  }
 
   ballHitsMe(ball) {
     if (ball.x < this.x) return false;
@@ -125,6 +125,7 @@ let paddle;
 let ball;
 let gameOver = false;
 let bricks = [];
+
 function setup() {
   createCanvas(SCREEN_WIDTH, SCREEN_HEIGHT);
   paddle = new Paddle();
@@ -135,6 +136,33 @@ function setup() {
     brick.x = Math.random() * SCREEN_WIDTH;
     brick.y = Math.random() * SCREEN_HEIGHT * 0.5;
     bricks.push(brick);
+  }
+
+  showStatusOfBricks(bricks);
+}
+
+function repeatString(k, myString) {
+  let response = "";
+  for (let i = 0; i < k; i++) {
+    response += myString;
+  }
+  return response;
+}
+
+function showStatusOfBricks(bricks) {
+  for (let k = 0; k < bricks.length; k++) {
+    let brick = bricks[k];
+    let brickData = "";
+    brickData += "k=" + k + repeatString(3, " ");
+    brickData += "brick.x=" + brick.x + repeatString(3, " ");
+    brickData += "brick.y=" + brick.y + repeatString(3, " ");
+    brickData += "brick.width=" + brick.width + repeatString(3, " ");
+    brickData += "brick.height=" + brick.height + repeatString(3, " ");
+    brickData += "brick.isBroken=" + brick.isBroken + repeatString(3, " ");
+
+    console.log(brickData);
+
+
   }
 }
 
@@ -156,7 +184,7 @@ function draw() {
     ball.bounceUp();
   }
 
-  for (let k= 0; k < bricks.length; k++) {
+  for (let k = 0; k < bricks.length; k++) {
     let brick = bricks[k];
     brick.draw();
 
@@ -166,4 +194,3 @@ function draw() {
     }
   }
 }
-
