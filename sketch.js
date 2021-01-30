@@ -11,8 +11,10 @@ function Brick() {
   this.width = 40;
   this.height = 20;
   this.isBroken = false;
+  this.color = "pink";
   this.draw = function () {
     if (!this.isBroken) {
+      fill(color(this.color));
       rect(this.x, this.y, this.width, this.height);
     }
   }
@@ -121,6 +123,20 @@ class Paddle {
   }
 }
 
+// https://stackoverflow.com/questions/1527803/generating-random-whole-numbers-in-javascript-in-a-specific-range
+/**
+ * Returns a random integer between min (inclusive) and max (inclusive).
+ * The value is no lower than min (or the next integer greater than min
+ * if min isn't an integer) and no greater than max (or the next integer
+ * lower than max if max isn't an integer).
+ * Using Math.round() will give you a non-uniform distribution!
+ */
+function getRandomInt(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
 let paddle;
 let ball;
 let gameOver = false;
@@ -135,6 +151,25 @@ function setup() {
     var brick = new Brick();
     brick.x = Math.random() * SCREEN_WIDTH;
     brick.y = Math.random() * SCREEN_HEIGHT * 0.5;
+
+    const colorIndex = getRandomInt(0,3);
+    let color = "pink";
+    switch(colorIndex) {
+      case 0: 
+        color = "#4285F4";
+        break;
+      case 1: 
+        color = "#EA4335";
+        break;
+      case 2: 
+        color = "#FBBC05";
+        break;
+      case 3: 
+        color = "#34A853";
+        break;
+    }
+
+    brick.color = color;
     bricks.push(brick);
   }
 
@@ -158,11 +193,10 @@ function showStatusOfBricks(bricks) {
     brickData += "brick.y=" + brick.y + repeatString(3, " ");
     brickData += "brick.width=" + brick.width + repeatString(3, " ");
     brickData += "brick.height=" + brick.height + repeatString(3, " ");
+    brickData += "brick.color=" + brick.color + repeatString(3, " ");
     brickData += "brick.isBroken=" + brick.isBroken + repeatString(3, " ");
 
     console.log(brickData);
-
-
   }
 }
 
