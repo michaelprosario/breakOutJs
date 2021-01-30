@@ -14,12 +14,25 @@ function Brick() {
   this.color = "pink";
   this.draw = function () {
     if (!this.isBroken) {
-      fill(color(this.color));
+      let myColor = this.color;
+      let colorToSet;
+
+      if (myColor !== null || myColor !== undefined || myColor !== '') {
+        colorToSet = myColor;
+      } else {
+        colorToSet = "Red"
+      }
+
+      fill(color(colorToSet));
       rect(this.x, this.y, this.width, this.height);
     }
   }
 
   this.ballHitsMe = function (ball) {
+    if (!ball) {
+      throw new Error('Ball is not defined');
+    }
+
     if (ball.x < this.x) return false;
 
     if (ball.x > this.x + this.width) return false;
@@ -103,6 +116,10 @@ class Paddle {
   }
 
   ballHitsMe(ball) {
+    if (!ball) {
+      throw new Error('Ball is not defined');
+    }
+
     if (ball.x < this.x) return false;
 
     if (ball.x > this.x + this.width) return false;
