@@ -152,28 +152,33 @@ function setup() {
     brick.x = Math.random() * SCREEN_WIDTH;
     brick.y = Math.random() * SCREEN_HEIGHT * 0.5;
 
-    const colorIndex = getRandomInt(0,3);
-    let color = "pink";
-    switch(colorIndex) {
-      case 0: 
-        color = "#4285F4";
-        break;
-      case 1: 
-        color = "#EA4335";
-        break;
-      case 2: 
-        color = "#FBBC05";
-        break;
-      case 3: 
-        color = "#34A853";
-        break;
-    }
+    let color = pickRandomColor();
 
     brick.color = color;
     bricks.push(brick);
   }
 
   showStatusOfBricks(bricks);
+}
+
+function pickRandomColor() {
+  const colorIndex = getRandomInt(0, 3);
+  let color = "pink";
+  switch (colorIndex) {
+    case 0:
+      color = "#4285F4";
+      break;
+    case 1:
+      color = "#EA4335";
+      break;
+    case 2:
+      color = "#FBBC05";
+      break;
+    case 3:
+      color = "#34A853";
+      break;
+  }
+  return color;
 }
 
 function repeatString(k, myString) {
